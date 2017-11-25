@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+    <title>EPIPIC</title>
+</head>
+
+<body>
+    <h1>Bienvenue sur EPIPIC</h1>
+    <h2>Ajout d'une image</h2>
+      <span>Url : </span><input type="text" name="picture" id="picture"><br />
+      <span>Caption : </span><input type="text" name="caption" id="caption"><br />
+      <br />
+      <button id="upload">Upload</button>
+    <h2>Images</h2>
+    <div class="container">
+      <div class="grid">
+
+      </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="mylib.js"></script>
+<script>
+  let cursor = -1;
+  getFirstPictures(50);
+  // Listen scroll
+  window.onscroll = function() {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      cursor = cursor + 50;
+      getPictures(cursor, 50);
+    }
+  };
+
+  ///////
+  let upload = document.getElementById('upload');
+  //upload.onclick = sendPicture();
+  upload.onclick = function () {
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "/api/pictures", true);
+    xmlhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+    let picture = document.getElementById('picture').value;
+    // test picture field validity
+    let test = document.createElement('img');
+    test.setAttribute('src', picture);
+    test.onerror = function() {
+      xmlhttp.send(JSON.stringify({'picture' : null, 'caption' : 'none'}));
+    };
+    test.onload = function() {
+      let data = {
+        'picture' : picture,
+        'caption' : document.getElementById('caption').value
+      }
+      xmlhttp.send(JSON.stringify(data));
+    };
+  };
+</script>

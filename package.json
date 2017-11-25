@@ -1,0 +1,16 @@
+{
+  "name": "EPIPIC",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Moussa",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "express-minify": "^0.2.0"
+  },
+  "scripts": {
+    "start": "node app/index.js",
+    "nodemon": "nodemon app/index.js"
+  }
+}
