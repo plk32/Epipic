@@ -7,7 +7,8 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "express-minify": "^0.2.0"
+    "express-minify": "^0.2.0",
+    "mysql": "^2.15.0"
   },
   "scripts": {
     "start": "node app/index.js",
