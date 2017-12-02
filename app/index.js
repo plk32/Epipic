@@ -7,40 +7,39 @@ const minify = require('express-minify');
 
 // MYSQL Connection
 const mysql = require('mysql');
+var source = require('../config.js');
 
 var connection = mysql.createConnection({
-  host: '127.0.0.1',
-  port: '3306',
-  user: "root",
-  password: "password",
-  database: "epipic"
+  host: source.host,
+  user: source.user,
+  password: source.password
 });
 
 
 // Creation de la base et de la table image
-
-/*
 connection.connect(function(err) {
+
+  // CREATE DATABASE
   if (err) throw err;
   console.log("Connected!");
-  connection.query("CREATE DATABASE mydb", function (err, result) {
+  var createDatabase = "CREATE DATABASE IF NOT EXISTS " + source.database;
+  connection.query(createDatabase, function (err, result) {
     if (err) throw err;
     console.log("Database created");
   });
-});
-*/
 
-/*
-connection.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-  var sql = "CREATE TABLE image (id INT AUTO_INCREMENT PRIMARY KEY, url text, caption VARCHAR(255))";
-  connection.query(sql, function (err, result) {
+  // CREATE TABLE
+  var useDatabase = "USE " + source.database;
+  connection.query(useDatabase, function (err) {
     if (err) throw err;
-    console.log("Table created");
+    var createTable = "CREATE TABLE IF NOT EXISTS image (id INT AUTO_INCREMENT PRIMARY KEY, url text, caption VARCHAR(255))";
+    connection.query(createTable, function (err, result) {
+      if (err) throw err;
+      console.log("Table created");
+    });
   });
+
 });
-*/
 
 app.use(minify());
 app.use(express.static('public'));
@@ -150,7 +149,7 @@ app.get('/api/pictures', (req, res) => {
     for(let i = cursor + 1; (i <= max) && (i < pictures.length); i++) {
       let obj = {}
       obj.id = pictures[i].id;
-      //obj.index = pictures[i].index;
+      obj.index = pictures[i].index;
       obj.picture = pictures[i].url;
       obj.caption = pictures[i].caption;
       array.push(obj);
