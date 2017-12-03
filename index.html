@@ -24,6 +24,11 @@
 </html>
 <script type="text/javascript" src="mylib.js"></script>
 <script>
+
+  function refreshPage(){
+    window.location.reload();
+  }
+
   let cursor = -1;
   getFirstPictures(50);
   // Listen scroll
@@ -55,5 +60,9 @@
       }
       xmlhttp.send(JSON.stringify(data));
     };
+
+    // REFRESH
+    refreshPage();
+
   };
 </script>
